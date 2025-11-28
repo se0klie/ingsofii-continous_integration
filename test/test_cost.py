@@ -1,4 +1,6 @@
-from models import FamilyMembership, Feature, PremiumFeature
+from models.FamilyMembership import FamilyMembership
+from models.Feature import Feature
+from models.PremiumFeature import PremiumFeature
 from models.Membership import Membership
 from models.PremiumMembership import PremiumMembership
 
