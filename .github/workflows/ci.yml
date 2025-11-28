@@ -12,7 +12,7 @@ jobs:
       - name: Trigger Jenkins Job
         uses: appleboy/jenkins-action@v0.2.0
         with:
-          url: "https://conclusionally-uncitizenly-caprice.ngrok-free.dev"      # e.g., https://jenkins.example.com
-          user: "seoklie"
-          token: ${{ secrets.JENKINS_API_TOKEN }}
+          url: "https://exhaustive-retta-punctuative.ngrok-free.dev"
+          user: "jojusuar"
+          token: "ueH6qC6p3D9G1s6pZbV8WJQ1t0r1zL00N4E7vJX2otw="
           job: "continousintegration"
