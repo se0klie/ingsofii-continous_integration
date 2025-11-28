@@ -16,3 +16,5 @@ jobs:
           username: "jojusuar"
           api_token: "115d04ad45c1c12c07b5cae6d558dca7f4"
           job_name: "continousintegration"
+          parameters: |
+            BRANCH_NAME=${{ github.head_ref }}
