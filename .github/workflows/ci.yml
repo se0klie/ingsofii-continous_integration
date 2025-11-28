@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Jenkins Job
-        uses: appleboy/jenkins-action@v0.2.0
+        uses: joshlk/jenkins-githubaction@master
         with:
           url: "https://exhaustive-retta-punctuative.ngrok-free.dev"
-          user: "jojusuar"
-          token: "ueH6qC6p3D9G1s6pZbV8WJQ1t0r1zL00N4E7vJX2otw="
-          job: "continousintegration"
+          username: "jojusuar"
+          api_token: "ueH6qC6p3D9G1s6pZbV8WJQ1t0r1zL00N4E7vJX2otw="
+          job_name: "continousintegration"
