@@ -14,5 +14,5 @@ jobs:
         with:
           url: "https://exhaustive-retta-punctuative.ngrok-free.dev"
           username: "jojusuar"
-          api_token: "ueH6qC6p3D9G1s6pZbV8WJQ1t0r1zL00N4E7vJX2otw="
+          api_token: "115d04ad45c1c12c07b5cae6d558dca7f4"
           job_name: "continousintegration"
