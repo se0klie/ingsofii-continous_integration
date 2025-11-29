@@ -15,13 +15,4 @@ class Feature(Membership):
         return self.wrapee.getAdditionalCost() + self.cost
     
     def getTotalCost(self):
-        return self.wrapee.getTotalCost()
-    
-    def isAvailable(self):
-        """Check if the feature is available. Feature is available only if itself and the wrapped membership are available."""
-        return self.available and self.wrapee.isAvailable()
-    
-    def getName(self):
-        """Get the name of the feature."""
-        return self.name
-    
+        return self.wrapee.getTotalCost() + self.cost

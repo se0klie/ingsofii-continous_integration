@@ -12,11 +12,9 @@ class Membership:
         return 0
     
     def getTotalBeforeDiscount(self):
-        """Get total cost before applying any discounts."""
         return self.getBaseCost() + self.getAdditionalCost()
     
     def getDiscountAmount(self):
-        """Calculate and return the total discount amount applied."""
         total = self.getTotalBeforeDiscount()
         discount = 0.0
         
@@ -34,7 +32,6 @@ class Membership:
         return discount
     
     def getDiscountDetails(self):
-        """Get a list of discount descriptions."""
         details = []
         total = self.getTotalBeforeDiscount()
         
@@ -53,7 +50,9 @@ class Membership:
         return details
     
     def getTotalCost(self):
-        """Get total cost after applying all discounts."""
+        """
+        Get total cost after applying all discounts.
+        """
         total = self.getTotalBeforeDiscount()
         discount = self.getDiscountAmount()
         
@@ -66,11 +65,3 @@ class Membership:
     
     def getDetails(self):
         return f'Base cost: ${self.getBaseCost()}\nAdditional cost: ${self.getAdditionalCost()}\nTotal cost: ${self.getTotalCost()}'
-    
-    def isAvailable(self):
-        """Check if the membership is available."""
-        return self.available
-    
-    def setAvailable(self, available: bool):
-        """Set the availability status of the membership."""
-        self.available = available
