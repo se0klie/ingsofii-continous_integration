@@ -1,8 +1,9 @@
 class Membership:
 
-    def __init__(self, cost: float, group_size: int = 1):
+    def __init__(self, cost: float, group_size: int = 1, available: bool = True):
         self.cost = cost
         self.group_size = group_size
+        self.available = available
 
     def getBaseCost(self):
         return self.cost
@@ -10,22 +11,66 @@ class Membership:
     def getAdditionalCost(self):
         return 0
     
-    def getTotalCost(self):
-        total = self.getBaseCost() + self.getAdditionalCost()
+    def getTotalBeforeDiscount(self):
+        """Get total cost before applying any discounts."""
+        return self.getBaseCost() + self.getAdditionalCost()
+    
+    def getDiscountAmount(self):
+        """Calculate and return the total discount amount applied."""
+        total = self.getTotalBeforeDiscount()
+        discount = 0.0
         
         # Apply group discount (10% if 2 or more members)
         if self.group_size >= 2:
-            group_discount = total * 0.10
-            total -= group_discount
-            print(f"*** You are saving ${group_discount:.2f} by signing up {self.group_size} members together! ***")
+            discount += total * 0.10
         
         # Apply special offer discounts
-        if total > 400:
-            total -= 50
-        elif total > 200:
-            total -= 20
+        temp_total = total - discount
+        if temp_total > 400:
+            discount += 50
+        elif temp_total > 200:
+            discount += 20
             
-        return total
+        return discount
+    
+    def getDiscountDetails(self):
+        """Get a list of discount descriptions."""
+        details = []
+        total = self.getTotalBeforeDiscount()
+        
+        # Group discount
+        if self.group_size >= 2:
+            group_discount = total * 0.10
+            details.append(f"Group membership discount ({self.group_size} members): 10% (${group_discount:.2f})")
+        
+        # Special offer discounts
+        temp_total = total - (total * 0.10 if self.group_size >= 2 else 0)
+        if temp_total > 400:
+            details.append("Special offer discount (>$400): $50.00")
+        elif temp_total > 200:
+            details.append("Special offer discount (>$200): $20.00")
+        
+        return details
+    
+    def getTotalCost(self):
+        """Get total cost after applying all discounts."""
+        total = self.getTotalBeforeDiscount()
+        discount = self.getDiscountAmount()
+        
+        # Print group discount message if applicable
+        if self.group_size >= 2:
+            group_discount = total * 0.10
+            print(f"*** You are saving ${group_discount:.2f} by signing up {self.group_size} members together! ***")
+        
+        return total - discount
     
     def getDetails(self):
         return f'Base cost: ${self.getBaseCost()}\nAdditional cost: ${self.getAdditionalCost()}\nTotal cost: ${self.getTotalCost()}'
+    
+    def isAvailable(self):
+        """Check if the membership is available."""
+        return self.available
+    
+    def setAvailable(self, available: bool):
+        """Set the availability status of the membership."""
+        self.available = available

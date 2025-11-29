@@ -4,8 +4,8 @@ from models.Feature import Feature
 
 class PremiumFeature(Feature):
 
-    def __init__(self, cost: float, name: str, wrapee: PremiumMembership):
-        super().__init__(name, cost, wrapee)
+    def __init__(self, cost: float, name: str, wrapee: PremiumMembership, available: bool = True):
+        super().__init__(name, cost, wrapee, available)
         
     
     def getAdditionalCost(self):
@@ -22,3 +22,4 @@ class PremiumFeature(Feature):
 
     def getDetails(self):
         return f'Base cost: ${self.getBaseCost()}\nAdditional cost: ${self.getAdditionalCost()}\n15% surcharge: ${self.getSurcharge()}\nTotal cost: ${self.getTotalCost()}'
+    

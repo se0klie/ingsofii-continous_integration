@@ -3,6 +3,6 @@ from models.Membership import Membership
 class BasicMembership(Membership):
 
 
-    def __init__(self, cost: float, group_size: int = 1):
+    def __init__(self, cost: float, group_size: int = 1, available: bool = True):
 
-        super().__init__(cost, group_size)
+        super().__init__(cost, group_size, available)
