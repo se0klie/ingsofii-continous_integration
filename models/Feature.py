@@ -1,9 +1,10 @@
 from models.Membership import Membership
 
+
 class Feature(Membership):
 
     def __init__(self, name: str, cost: float, wrapee: Membership):
-        super().__init__(cost)
+        super().__init__(cost, wrapee.group_size)
         self.wrapee = wrapee
 
     def getBaseCost(self):
@@ -12,4 +13,5 @@ class Feature(Membership):
     def getAdditionalCost(self):
         return self.wrapee.getAdditionalCost() + self.cost
     
-    
+    def getTotalCost(self):
+        return self.wrapee.getTotalCost()
