@@ -89,7 +89,7 @@ def display_confirmation(membership, membership_name, additional_features):
     discount_amount = base_membership.getDiscountAmount()
 
     if discount_amount > 0:
-        print(f"\nApplied Discounts:")
+        print("\nApplied Discounts:")
         for desc in discount_details:
             print(f"  - {desc}")
         print(f"Total Discount: ${discount_amount:.2f}")
@@ -98,7 +98,7 @@ def display_confirmation(membership, membership_name, additional_features):
     print(f"\n{'='*60}")
     print(f"FINAL TOTAL COST: ${final_total:.2f}")
     print("="*60)
-    
+
     return final_total
 
 
