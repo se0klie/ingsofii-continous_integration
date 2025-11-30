@@ -10,15 +10,15 @@ class Feature(Membership):
 
     def getBaseCost(self):
         return self.wrapee.getBaseCost()
-    
+
     def getAdditionalCost(self):
         return self.wrapee.getAdditionalCost() + self.cost
-    
+
     def getTotalCost(self):
         return self.getBaseCost() + self.getAdditionalCost()
-    
+
     def isAvailable(self):
         return self.available and self.wrapee.isAvailable()
-    
+
     def getName(self):
         return self.name

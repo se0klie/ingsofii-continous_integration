@@ -27,7 +27,6 @@ print(f'Membership 1: Premium\n{membership1.getDetails()}\n')
 print(f'Membership 2: Family\n{membership2.getDetails()}\n')
 
 
-
 def get_base_membership(membership):
     """
     Get the base membership object from the chain.
@@ -36,6 +35,7 @@ def get_base_membership(membership):
     while hasattr(current, 'wrapee'):
         current = current.wrapee
     return current
+
 
 def extract_feature_names(membership):
     """
@@ -49,6 +49,7 @@ def extract_feature_names(membership):
         current = current.wrapee
     return features
 
+
 def display_confirmation(membership, membership_name, additional_features):
     """
     Display confirmation screen with all membership details.
@@ -56,45 +57,43 @@ def display_confirmation(membership, membership_name, additional_features):
     print("\n" + "="*60)
     print("MEMBERSHIP CONFIRMATION")
     print("="*60)
-    
+
     print(f"\nSelected Membership: {membership_name} Membership")
     print(f"Base Cost: ${membership.getBaseCost():.2f}")
-    
-    # Get built-in features
+
     all_features = extract_feature_names(membership)
     built_in_features = [f for f in all_features if f not in additional_features]
-    
+
     if built_in_features:
-        print(f"\nBuilt-in Features (included):")
+        print("\nBuilt-in Features (included):")
         for feature in built_in_features:
             print(f"  - {feature}")
-    
+
     if additional_features:
-        print(f"\nAdditional Features:")
+        print("\nAdditional Features:")
         additional_cost = 0.0
         for feature in additional_features:
             print(f"  - {feature.name}")
             additional_cost += feature.cost
         if additional_cost > 0:
             print(f"Additional Features Cost: ${additional_cost:.2f}")
-    
-    # Check for premium feature surcharge
+
     surcharge = 0.0
     if isinstance(membership, PremiumFeature):
         surcharge = membership.getSurcharge()
         if surcharge > 0:
             print(f"\nPremium Feature Surcharge (15%): ${surcharge:.2f}")
-    
+
     base_membership = get_base_membership(membership)
     discount_details = base_membership.getDiscountDetails()
     discount_amount = base_membership.getDiscountAmount()
-    
+
     if discount_amount > 0:
         print(f"\nApplied Discounts:")
         for desc in discount_details:
             print(f"  - {desc}")
         print(f"Total Discount: ${discount_amount:.2f}")
-    
+
     final_total = membership.getTotalCost() - discount_amount
     print(f"\n{'='*60}")
     print(f"FINAL TOTAL COST: ${final_total:.2f}")
@@ -102,11 +101,11 @@ def display_confirmation(membership, membership_name, additional_features):
     
     return final_total
 
+
 def main():
     """
     Main function to run the Gym Membership Management System CLI.
     """
-    # 1. Definir y construir los planes de membresía con sus beneficios (features)
     basic_plan_base = BasicMembership(cost=50, available=True)
     basic_plan = Feature(name="Access to gym floor", cost=0, wrapee=basic_plan_base, available=True)
     basic_plan = Feature(name="Standard locker room", cost=0, wrapee=basic_plan, available=True)
@@ -116,7 +115,7 @@ def main():
     premium_plan = Feature(name="Access to group classes", cost=0, wrapee=premium_plan, available=True)
     premium_plan = Feature(name="Sauna and spa access", cost=0, wrapee=premium_plan, available=True)
 
-    family_plan_base = FamilyMembership(cost=250, available=True)
+    family_plan_base = FamilyMembership(cost=250, available=False)
     family_plan = Feature(name="All Premium benefits for up to 4 family members", cost=0, wrapee=family_plan_base, available=True)
     family_plan = Feature(name="Childcare services", cost=0, wrapee=family_plan, available=True)
 
@@ -125,8 +124,6 @@ def main():
         "2": ("Premium", premium_plan, premium_plan_base),
         "3": ("Family", family_plan, family_plan_base)
     }
-
-    # Additional features available for selection
 
     additional_features_catalog = {
         "1": Feature(name="Personal training sessions", cost=25.00, wrapee=basic_plan_base, available=True),
@@ -141,7 +138,6 @@ def main():
     selected_membership_base = None
     selected_additional_features = []
 
-    # Step 1: Select membership plan with availability validation
     while True:
         print("\n" + "="*60)
         print("Welcome to the Gym Membership Management System!")
@@ -150,7 +146,7 @@ def main():
         for key, (name, plan, base) in memberships.items():
             availability_status = "Available" if base.available else "Unavailable"
             print(f"{key}. {name} Membership - ${plan.getTotalCost():.2f} [{availability_status}]")
-        
+            print(f"   Features included: {', '.join(extract_feature_names(plan))}")
         choice = input("\nEnter the number of your choice (or 'q' to quit): ")
 
         if choice.lower() == 'q':
@@ -159,13 +155,12 @@ def main():
 
         if choice in memberships:
             name, plan, base = memberships[choice]
-            
-            #Validate membership availability
+
             if not base.available:
-                print(f"\nERROR: The {name} Membership is currently unavailable.")
-                print("Please select an available membership plan from the options below.\n")
+                print(f"\n\n!!!\n\nERROR: The {name} Membership is currently unavailable.")
+                print("Please select an available membership plan from the options below.\n\n!!!\n")
                 continue
-            
+
             selected_membership = plan
             selected_membership_name = name
             selected_membership_base = base
@@ -174,23 +169,19 @@ def main():
         else:
             print("\nInvalid choice, please try again.")
 
-    # Step 2: Select additional features with availability validation
     print("\n" + "="*60)
     print("ADDITIONAL FEATURES")
     print("="*60)
     print("\nWould you like to add additional features?")
-    
-    # Filter premium features for Premium memberships only
+
     available_features = {}
     for key, feature_obj in additional_features_catalog.items():
         if isinstance(feature_obj, PremiumFeature):
-            # Premium features only for Premium memberships
             if selected_membership_name == "Premium":
                 available_features[key] = feature_obj
         else:
-            # Regular features for all memberships
             available_features[key] = feature_obj
-    
+
     if available_features:
         def show_feature_options():
             """
@@ -200,42 +191,37 @@ def main():
             for key, feature_obj in available_features.items():
                 feature_type = " (Premium)" if isinstance(feature_obj, PremiumFeature) else ""
                 status = "Available" if feature_obj.available else "Unavailable"
-                # Get cost from the feature object
                 feature_cost = feature_obj.cost
                 feature_name = feature_obj.getName()
                 print(f"{key}. {feature_name}{feature_type} - ${feature_cost:.2f} [{status}]")
             print(f"{len(available_features) + 1}. Skip additional features")
-        
+
         show_feature_options()
-        
+
         while True:
             feature_choice = input("\nEnter the number of your choice: ")
-            
+
             if feature_choice == str(len(available_features) + 1):
                 break
-            
+
             if feature_choice in available_features:
                 feature_obj = available_features[feature_choice]
                 feature_name = feature_obj.getName()
-                
-                # Validate feature availability
+
                 if not feature_obj.available:
                     print(f"\nERROR: The feature '{feature_name}' is currently unavailable.")
                     print("Please select an available feature from the options below.\n")
                     show_feature_options()
                     continue
-                
-                # Check if it's a premium feature
+
                 is_premium_feature = isinstance(feature_obj, PremiumFeature)
                 if is_premium_feature:
-                    # Validate that the membership is Premium
                     if not isinstance(selected_membership_base, PremiumMembership):
-                        print(f"\nERROR: Premium features can only be added to Premium memberships.")
+                        print("\nERROR: Premium features can only be added to Premium memberships.")
                         print("Please select an available feature from the options below.\n")
                         show_feature_options()
                         continue
-                    
-                    # Add premium feature - create new instance wrapping the current membership
+
                     selected_membership = PremiumFeature(
                         cost=feature_obj.cost,
                         name=feature_name,
@@ -243,30 +229,26 @@ def main():
                         available=feature_obj.available
                     )
                 else:
-                    # Add regular feature - create new instance wrapping the current membership
                     selected_membership = Feature(
                         name=feature_name,
                         cost=feature_obj.cost,
                         wrapee=selected_membership,
                         available=feature_obj.available
                     )
-                
+
                 selected_additional_features.append(selected_membership)
                 print(f"\nAdded feature: {selected_membership.name}")
-                
-                # Ask if user wants to add more features
+
                 add_more = input("Would you like to add another feature? (y/n): ").lower()
                 if add_more != 'y':
                     break
                 else:
-                    # Show options again before asking for next feature
                     print()
                     show_feature_options()
             else:
                 print("\nInvalid choice, please try again.")
                 show_feature_options()
 
-    # Step 3: Group membership question (for discount calculation)
     print("\n" + "="*60)
     num_members = 1
     try:
@@ -276,36 +258,34 @@ def main():
             num_members = 1
         if num_members >= 2:
             print(f"\nGroup membership detected! You'll receive a 10% discount for {num_members} members.")
-            # Update group_size in the membership chain
             base = get_base_membership(selected_membership)
             base.group_size = num_members
     except ValueError:
         num_members = 1
 
-    # Step 4: User confirmation
     while True:
-        final_cost = display_confirmation(selected_membership, selected_membership_name, 
-                                         selected_additional_features)
+        final_cost = display_confirmation(selected_membership, selected_membership_name, selected_additional_features)
         print("\nOptions:")
         print("1. Confirm and finalize membership")
         print("2. Cancel and make changes")
-        
+
         confirm_choice = input("\nEnter your choice (1 or 2): ")
-        
+
         if confirm_choice == "1":
             print("\n" + "="*60)
             print("MEMBERSHIP CONFIRMED!")
             print("="*60)
             print(f"\nThank you for choosing {selected_membership_name} Membership!")
-            print(f"Your membership has been successfully processed.")
+            print("Your membership has been successfully processed.")
             print(f"Total amount: ${final_cost:.2f}")
             print("\nWelcome to our gym!")
-            return int(final_cost)  # Return positive integer
+            return int(final_cost)
         elif confirm_choice == "2":
             print("\nMembership selection cancelled.")
-            return -1  # Return -1 if cancelled
+            return -1
         else:
             print("\nInvalid choice, please try again.")
+
 
 if __name__ == "__main__":
     main()
