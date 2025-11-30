@@ -15,4 +15,4 @@ class Feature(Membership):
         return self.wrapee.getAdditionalCost() + self.cost
     
     def getTotalCost(self):
-        return self.wrapee.getTotalCost() + self.cost
+        return self.getBaseCost() + self.getAdditionalCost()

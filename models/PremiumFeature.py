@@ -9,14 +9,14 @@ class PremiumFeature(Feature):
         
     
     def getAdditionalCost(self):
-        base_additional = super().getAdditionalCost()
-        surcharge = round((self.wrapee.getBaseCost() + base_additional) * 0.15, 2)
-        return base_additional + surcharge - self.cost
+        return self.wrapee.getAdditionalCost() + self.cost
     
     def getTotalCost(self):
-        return self.wrapee.getTotalCost()
+        raw_cost = self.getBaseCost() + self.getAdditionalCost()
+        return round(raw_cost * 1.15, 2)
 
     def getSurcharge(self):
+        raw_cost = self.getBaseCost() + self.getAdditionalCost()
         return round(super().getTotalCost() * 0.15, 2)
     
 
