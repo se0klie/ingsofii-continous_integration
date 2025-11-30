@@ -62,6 +62,13 @@ class Membership:
             print(f"*** You are saving ${group_discount:.2f} by signing up {self.group_size} members together! ***")
         
         return total - discount
+
+
+    def isAvailable(self):
+        return self.available
     
+    def setAvailable(self, available: bool):
+        self.available = available
+
     def getDetails(self):
         return f'Base cost: ${self.getBaseCost()}\nAdditional cost: ${self.getAdditionalCost()}\nTotal cost: ${self.getTotalCost()}'
