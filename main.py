@@ -95,9 +95,7 @@ def display_confirmation(membership, membership_name, additional_features):
             print(f"  - {desc}")
         print(f"Total Discount: ${discount_amount:.2f}")
     
-    final_total = membership.getTotalCost() + surcharge
-    for feature in additional_features:
-        final_total += feature.cost
+    final_total = membership.getTotalCost() - discount_amount
     print(f"\n{'='*60}")
     print(f"FINAL TOTAL COST: ${final_total:.2f}")
     print("="*60)
@@ -150,7 +148,7 @@ def main():
         print("="*60)
         print("\nPlease select a membership plan:")
         for key, (name, plan, base) in memberships.items():
-            availability_status = "Available" if base.isAvailable() else "Unavailable"
+            availability_status = "Available" if base.available else "Unavailable"
             print(f"{key}. {name} Membership - ${plan.getTotalCost():.2f} [{availability_status}]")
         
         choice = input("\nEnter the number of your choice (or 'q' to quit): ")
@@ -163,7 +161,7 @@ def main():
             name, plan, base = memberships[choice]
             
             #Validate membership availability
-            if not base.isAvailable():
+            if not base.available:
                 print(f"\nERROR: The {name} Membership is currently unavailable.")
                 print("Please select an available membership plan from the options below.\n")
                 continue
@@ -201,7 +199,7 @@ def main():
             print("\nAvailable features:")
             for key, feature_obj in available_features.items():
                 feature_type = " (Premium)" if isinstance(feature_obj, PremiumFeature) else ""
-                status = "Available" if feature_obj.isAvailable() else "Unavailable"
+                status = "Available" if feature_obj.available else "Unavailable"
                 # Get cost from the feature object
                 feature_cost = feature_obj.cost
                 feature_name = feature_obj.getName()
@@ -221,7 +219,7 @@ def main():
                 feature_name = feature_obj.getName()
                 
                 # Validate feature availability
-                if not feature_obj.isAvailable():
+                if not feature_obj.available:
                     print(f"\nERROR: The feature '{feature_name}' is currently unavailable.")
                     print("Please select an available feature from the options below.\n")
                     show_feature_options()
