@@ -4,17 +4,17 @@ class Membership:
         self.group_size = group_size
         self.available = available
 
-    def getBaseCost(self):
+    def get_base_cost(self):
         return self.cost
 
-    def getAdditionalCost(self):
+    def get_additional_cost(self):
         return 0
 
-    def getTotalBeforeDiscount(self):
-        return self.getBaseCost() + self.getAdditionalCost()
+    def get_total_before_discount(self):
+        return self.get_base_cost() + self.get_additional_cost()
 
-    def getDiscountAmount(self):
-        total = self.getTotalBeforeDiscount()
+    def get_discount_amount(self):
+        total = self.get_total_before_discount()
         discount = 0.0
 
         if self.group_size >= 2:
@@ -28,9 +28,9 @@ class Membership:
 
         return discount
 
-    def getDiscountDetails(self):
+    def get_discount_details(self):
         details = []
-        total = self.getTotalBeforeDiscount()
+        total = self.get_total_before_discount()
 
         if self.group_size >= 2:
             group_discount = total * 0.10
@@ -44,12 +44,12 @@ class Membership:
 
         return details
 
-    def getTotalCost(self):
+    def get_total_cost(self):
         """
         Get total cost after applying all discounts.
         """
-        total = self.getTotalBeforeDiscount()
-        discount = self.getDiscountAmount()
+        total = self.get_total_before_discount()
+        discount = self.get_discount_amount()
 
         if self.group_size >= 2:
             group_discount = total * 0.10
@@ -57,11 +57,11 @@ class Membership:
 
         return total - discount
 
-    def isAvailable(self):
+    def is_available(self):
         return self.available
 
-    def setAvailable(self, available: bool):
+    def set_available(self, available: bool):
         self.available = available
 
-    def getDetails(self):
-        return f'Base cost: ${self.getBaseCost()}\nAdditional cost: ${self.getAdditionalCost()}\nTotal cost: ${self.getTotalCost()}'
+    def get_details(self):
+        return f'Base cost: ${self.get_base_cost()}\nAdditional cost: ${self.get_additional_cost()}\nTotal cost: ${self.get_total_cost()}'

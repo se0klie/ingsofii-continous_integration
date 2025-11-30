@@ -1,8 +1,8 @@
-from models.PremiumFeature import PremiumFeature
-from models.Feature import Feature
-from models.BasicMembership import BasicMembership
-from models.PremiumMembership import PremiumMembership
-from models.FamilyMembership import FamilyMembership
+from models.premium_feature import PremiumFeature
+from models.feature import Feature
+from models.basic_membership import BasicMembership
+from models.premium_membership import PremiumMembership
+from models.familiy_membership import FamilyMembership
 
 membership1 = PremiumMembership(cost=12.50)
 membership1 = PremiumFeature(name="Specialized program",
@@ -22,9 +22,9 @@ membership2 = Feature(name="Group classes",
 
 
 
-print(f'Membership 1: Premium\n{membership1.getDetails()}\n')
+print(f'Membership 1: Premium\n{membership1.get_details()}\n')
 
-print(f'Membership 2: Family\n{membership2.getDetails()}\n')
+print(f'Membership 2: Family\n{membership2.get_details()}\n')
 
 
 def get_base_membership(membership):
@@ -44,8 +44,8 @@ def extract_feature_names(membership):
     features = []
     current = membership
     while hasattr(current, 'wrapee'):
-        if hasattr(current, 'getName'):
-            features.append(current.getName())
+        if hasattr(current, 'name'):
+            features.append(current.get_name())
         current = current.wrapee
     return features
 
@@ -59,7 +59,7 @@ def display_confirmation(membership, membership_name, additional_features):
     print("="*60)
 
     print(f"\nSelected Membership: {membership_name} Membership")
-    print(f"Base Cost: ${membership.getBaseCost():.2f}")
+    print(f"Base Cost: ${membership.get_base_cost():.2f}")
 
     all_features = extract_feature_names(membership)
     built_in_features = [f for f in all_features if f not in additional_features]
@@ -85,8 +85,8 @@ def display_confirmation(membership, membership_name, additional_features):
             print(f"\nPremium Feature Surcharge (15%): ${surcharge:.2f}")
 
     base_membership = get_base_membership(membership)
-    discount_details = base_membership.getDiscountDetails()
-    discount_amount = base_membership.getDiscountAmount()
+    discount_details = base_membership.get_details()
+    discount_amount = base_membership.get_discount_amount()
 
     if discount_amount > 0:
         print("\nApplied Discounts:")
@@ -94,7 +94,7 @@ def display_confirmation(membership, membership_name, additional_features):
             print(f"  - {desc}")
         print(f"Total Discount: ${discount_amount:.2f}")
 
-    final_total = membership.getTotalCost() - discount_amount
+    final_total = membership.get_total_cost() - discount_amount
     print(f"\n{'='*60}")
     print(f"FINAL TOTAL COST: ${final_total:.2f}")
     print("="*60)
@@ -145,7 +145,7 @@ def main():
         print("\nPlease select a membership plan:")
         for key, (name, plan, base) in memberships.items():
             availability_status = "Available" if base.available else "Unavailable"
-            print(f"{key}. {name} Membership - ${plan.getTotalCost():.2f} [{availability_status}]")
+            print(f"{key}. {name} Membership - ${plan.get_total_cost():.2f} [{availability_status}]")
             print(f"   Features included: {', '.join(extract_feature_names(plan))}")
         choice = input("\nEnter the number of your choice (or 'q' to quit): ")
 
@@ -192,7 +192,7 @@ def main():
                 feature_type = " (Premium)" if isinstance(feature_obj, PremiumFeature) else ""
                 status = "Available" if feature_obj.available else "Unavailable"
                 feature_cost = feature_obj.cost
-                feature_name = feature_obj.getName()
+                feature_name = feature_obj.get_name()
                 print(f"{key}. {feature_name}{feature_type} - ${feature_cost:.2f} [{status}]")
             print(f"{len(available_features) + 1}. Skip additional features")
 
@@ -206,7 +206,7 @@ def main():
 
             if feature_choice in available_features:
                 feature_obj = available_features[feature_choice]
-                feature_name = feature_obj.getName()
+                feature_name = feature_obj.get_name()
 
                 if not feature_obj.available:
                     print(f"\nERROR: The feature '{feature_name}' is currently unavailable.")
